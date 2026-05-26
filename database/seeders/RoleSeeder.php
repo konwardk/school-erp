@@ -17,7 +17,6 @@ class RoleSeeder extends Seeder
         $roles = [
             ['role_name' => 'superadmin'],
             ['role_name' => 'admin'],
-            ['role_name' => 'staff'],
             ['role_name' => 'student'],
         ];
 
@@ -29,7 +28,7 @@ class RoleSeeder extends Seeder
         $superAdminRole = Role::where('role_name', 'superadmin')->first();
 
         User::firstOrCreate(
-            ['email' => 'superadmin@example.com'],
+            ['email' => 'super@admin.com'],
             [
                 'name' => 'Super Admin',
                 'password' => Hash::make('password'),
