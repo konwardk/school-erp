@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class School extends Model
 {
@@ -33,13 +33,8 @@ class School extends Model
         return $schoolId;
     }
 
-    public function users(): HasMany
+    public function users(): BelongsToMany
     {
-        return $this->hasMany(User::class);
-    }
-
-    public function admins(): HasMany
-    {
-        return $this->hasMany(Admin::class);
+        return $this->belongsToMany(User::class, 'school_users');
     }
 }

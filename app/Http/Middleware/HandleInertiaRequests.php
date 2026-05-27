@@ -37,7 +37,7 @@ class HandleInertiaRequests extends Middleware
                     'name' => $request->user()->name,
                     'email' => $request->user()->email,
                     'role' => $request->user()->role ? $request->user()->role->role_name : null,
-                    'school_id' => $request->user()->school_id,
+                    'school_id' => $request->user()->schools()->first()?->id,
                     'notifications' => $request->user()->isSuperAdmin() ? $request->user()->unreadNotifications : [],
                 ] : null,
             ],

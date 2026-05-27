@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
 use App\Models\Role;
 use App\Models\School;
 use App\Models\User;
@@ -15,8 +14,12 @@ class SchoolAdminController extends Controller
 {
     public function index()
     {
+        $admins = User::whereHas('role', function($query) {
+            $query->where('role_name', 'admin');
+        })->with('schools')->get();
+
         return Inertia::render('SuperAdmin/Admins/Index', [
-            'admins' => Admin::with(['user', 'school'])->get(),
+            'admins' => $admins,
             'schools' => School::where('is_active', true)->get(),
         ]);
     }
@@ -41,13 +44,9 @@ class SchoolAdminController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role_id' => $adminRole->id,
-            'school_id' => $request->school_id,
         ]);
 
-        Admin::create([
-            'user_id' => $user->id,
-            'school_id' => $request->school_id,
-        ]);
+        $user->schools()->attach($request->school_id);
 
         return redirect()->back()->with('success', 'School Admin created successfully.');
     }

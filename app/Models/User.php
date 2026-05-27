@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role_id', 'school_id', 'is_active'])]
+#[Fillable(['name', 'email', 'password', 'role_id', 'is_active'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -38,14 +38,9 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function school(): BelongsTo
+    public function schools(): BelongsToMany
     {
-        return $this->belongsTo(School::class);
-    }
-
-    public function adminProfile(): HasOne
-    {
-        return $this->hasOne(Admin::class);
+        return $this->belongsToMany(School::class, 'school_users');
     }
 
     /**
