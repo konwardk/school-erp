@@ -11,20 +11,15 @@ interface School {
     name: string;
 }
 
-interface User {
+interface AdminUser {
     id: number;
     name: string;
     email: string;
-}
-
-interface Admin {
-    id: number;
-    user: User;
-    school: School;
+    schools: School[];
 }
 
 interface Props {
-    admins: Admin[];
+    admins: AdminUser[];
     schools: School[];
 }
 
@@ -130,15 +125,17 @@ export default function Index({ admins, schools }: Props) {
                                     <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Name</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Email</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">School</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Schools</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200">
                                     {admins.map((admin) => (
                                         <tr key={admin.id}>
-                                            <td className="px-6 py-4 whitespace-nowrap">{admin.user.name}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{admin.user.email}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{admin.school.name}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">{admin.name}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">{admin.email}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                {admin.schools.map((school) => school.name).join(', ')}
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
