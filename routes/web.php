@@ -15,8 +15,36 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+    $user = auth()->user();
+    if ($user->hasRole('superadmin')) {
+        return Inertia::render('Dashboard');
+    } elseif ($user->hasRole('student_manager')) {
+        return Inertia::render('StudentManager/Dashboard');
+    } elseif ($user->hasRole('admission_manager')) {
+        return Inertia::render('AdmissionManager/Dashboard');
+    } elseif ($user->hasRole('academics_manager')) {
+        return Inertia::render('AcademicsManager/Dashboard');
+    }
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'role:student_manager'])->prefix('student-manager')->name('student_manager.')->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('StudentManager/Dashboard');
+    })->name('dashboard');
+});
+
+Route::middleware(['auth', 'role:admission_manager'])->prefix('admission-manager')->name('admission_manager.')->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('AdmissionManager/Dashboard');
+    })->name('dashboard');
+});
+
+Route::middleware(['auth', 'role:academics_manager'])->prefix('academics-manager')->name('academics_manager.')->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('AcademicsManager/Dashboard');
+    })->name('dashboard');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -39,6 +67,9 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('supe
 
     Route::get('/admins', [App\Http\Controllers\SuperAdmin\SchoolAdminController::class, 'index'])->name('admins.index');
     Route::post('/admins', [App\Http\Controllers\SuperAdmin\SchoolAdminController::class, 'store'])->name('admins.store');
+
+    Route::get('/users', [App\Http\Controllers\SuperAdmin\UserController::class, 'index'])->name('users.index');
+    Route::post('/users', [App\Http\Controllers\SuperAdmin\UserController::class, 'store'])->name('users.store');
 });
 
 require __DIR__.'/auth.php';

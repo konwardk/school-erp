@@ -60,4 +60,19 @@ class User extends Authenticatable
     {
         return $this->hasRole('admin');
     }
+
+    public function isStudentManager(): bool
+    {
+        return $this->hasRole('student_manager');
+    }
+
+    public function isAdmissionManager(): bool
+    {
+        return $this->hasRole('admission_manager');
+    }
+
+    public function isAcademicsManager(): bool
+    {
+        return $this->hasRole('academics_manager');
+    }
 }

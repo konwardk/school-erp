@@ -8,7 +8,10 @@ import {
     ChevronLeft,
     ChevronRight,
     LogOut,
-    Bell
+    Bell,
+    UserCheck,
+    UserPlus,
+    BookOpen
 } from 'lucide-react';
 import { PageProps } from '@/types';
 
@@ -27,7 +30,31 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
             href: route('dashboard'),
             icon: LayoutDashboard,
             active: route().current('dashboard'),
-            roles: ['superadmin', 'admin', 'staff', 'student']
+            roles: ['superadmin', 'admin', 'staff', 'student', 'student_manager', 'admission_manager', 'academics_manager']
+        },
+        // Student Manager Routes
+        {
+            name: 'Student Management',
+            href: route('student_manager.dashboard'),
+            icon: UserCheck,
+            active: route().current('student_manager.*'),
+            roles: ['student_manager']
+        },
+        // Admission Manager Routes
+        {
+            name: 'Admission Management',
+            href: route('admission_manager.dashboard'),
+            icon: UserPlus,
+            active: route().current('admission_manager.*'),
+            roles: ['admission_manager']
+        },
+        // Academics Manager Routes
+        {
+            name: 'Academics Management',
+            href: route('academics_manager.dashboard'),
+            icon: BookOpen,
+            active: route().current('academics_manager.*'),
+            roles: ['academics_manager']
         },
         {
             name: 'Notifications',
@@ -42,6 +69,13 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
             href: route('superadmin.schools.index'),
             icon: School,
             active: route().current('superadmin.schools.*'),
+            roles: ['superadmin']
+        },
+        {
+            name: 'Users',
+            href: route('superadmin.users.index'),
+            icon: Users,
+            active: route().current('superadmin.users.*'),
             roles: ['superadmin']
         },
         {
